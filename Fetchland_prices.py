@@ -7,86 +7,73 @@
 #import libraries
 import numpy as np
 import matplotlib.pyplot as plt
-import csv
+import matplotlib.dates as mdates
+import datetime as dt
+import os
 
 def ShowMeWhatYouGot():
     '''
     combines above functions to plot
     '''
-    from datetime import date
-    today = date.today().strftime("%Y")
+    Dates = []
     
-    costVtime(Fetchprice(),(2020, 2021, 2022, 2023))
+    for i in range(0,19):
+        n = float(i)/40
+        Dates = np.append(Dates, 2020+n)
 
-def Fetchprice():
+    Data = FetchpriceR()
+    
+    costVtime(Data[0], Dates)
+    
+def FetchpriceR():
     '''
-    returns current prices of the fetchlands
+    reads the prices from a txt file and returns the information as an array
     '''
     
-    #create a storage array for the prices of fetchlands
+    #open our txt file to read the fetchland prices and dates
+    filepath = os.path.join('C:/Users/backup/Fetchland_Prices', 'Fetchland_prices.txt')
+    if not os.path.exists('C:/Users/backup/Fetchland_Prices'):
+        os.makedirs('C:/Users/backup/Fetchland_Prices')
+    f = open(filepath, 'r')
+    
+    #create a storage array for the prices of fetchlands and dates
     Fetchlands = [[],[],[],[],[],[],[],[],[],[]]
+    Dates = []
     
-    # with open('Fetchlandprices.txt') as in_file:
-    #     print(10)
+    #iterator
+    i=0
+    #record values from our file into arrays
+    for x in f:
+        if(i==10):
+            Dates = np.append(Dates, x)
+        else:
+            Fetchlands[i] = np.append(Fetchlands[i], x)
+        i=i+1
+      
+    #iterator
+    i=0
+    #convert values in our arrays into floats and dates
+    for x in Fetchlands:
+        Fetchlands[i] = np.fromstring(Fetchlands[i], dtype=float, sep=",")
+        if not isinstance(Fetchlands[i][-1], float):
+            Fetchlands[i] = Fetchlands[i][:-1]
+        if (Fetchlands[i][-1] == -1):
+            Fetchlands[i] = Fetchlands[i][:-1]
+        i=i+1
+        
+    Dates = Dates[0].split(",")
+    Dates = Dates[:-1]
     
-    #append the prices of the fetchlands to the storage array
-    Fetchlands[0] = np.append(Fetchlands[0], 27.62)
-    Fetchlands[1] = np.append(Fetchlands[1], 16.03)
-    Fetchlands[2] = np.append(Fetchlands[2], 33.93)
-    Fetchlands[3] = np.append(Fetchlands[3], 31.28)
-    Fetchlands[4] = np.append(Fetchlands[4], 62.63)
-    Fetchlands[5] = np.append(Fetchlands[5], 15.30)
-    Fetchlands[6] = np.append(Fetchlands[6], 56.03)
-    Fetchlands[7] = np.append(Fetchlands[7], 48.96)
-    Fetchlands[8] = np.append(Fetchlands[8], 8.90)
-    Fetchlands[9] = np.append(Fetchlands[9], 14.32)
     
-    #append the prices to the fetchlands for the next day
-    Fetchlands[0] = np.append(Fetchlands[0], 27.30)
-    Fetchlands[1] = np.append(Fetchlands[1], 14.86)
-    Fetchlands[2] = np.append(Fetchlands[2], 33.73)
-    Fetchlands[3] = np.append(Fetchlands[3], 29.58)
-    Fetchlands[4] = np.append(Fetchlands[4], 62.83)
-    Fetchlands[5] = np.append(Fetchlands[5], 17.34)
-    Fetchlands[6] = np.append(Fetchlands[6], 53.91)
-    Fetchlands[7] = np.append(Fetchlands[7], 46.56)
-    Fetchlands[8] = np.append(Fetchlands[8], 9.80)
-    Fetchlands[9] = np.append(Fetchlands[9], 14.76)
+    #create storage for date object
+    date_obj = []
+    for j in Dates:
+        j = np.fromstring(j, dtype=int, sep="-")
+        date_obj = np.append(date_obj, dt.date(j[0],j[1],j[2])) 
+        
     
-    #append the prices to the fetchlands for the next day
-    Fetchlands[0] = np.append(Fetchlands[0], 27.90)
-    Fetchlands[1] = np.append(Fetchlands[1], 15.95)
-    Fetchlands[2] = np.append(Fetchlands[2], 15.59)
-    Fetchlands[3] = np.append(Fetchlands[3], 27.87)
-    Fetchlands[4] = np.append(Fetchlands[4], 63.02)
-    Fetchlands[5] = np.append(Fetchlands[5], 19.04)
-    Fetchlands[6] = np.append(Fetchlands[6], 56.40)
-    Fetchlands[7] = np.append(Fetchlands[7], 50.33)
-    Fetchlands[8] = np.append(Fetchlands[8], 10.65)
-    Fetchlands[9] = np.append(Fetchlands[9], 16.12)
-    
-    #append the prices to the fetchlands for the next day
-    Fetchlands[0] = np.append(Fetchlands[0], 30.40)
-    Fetchlands[1] = np.append(Fetchlands[1], 17.32)
-    Fetchlands[2] = np.append(Fetchlands[2], 15.99)
-    Fetchlands[3] = np.append(Fetchlands[3], 30.71)
-    Fetchlands[4] = np.append(Fetchlands[4], 67.31)
-    Fetchlands[5] = np.append(Fetchlands[5], 20.11)
-    Fetchlands[6] = np.append(Fetchlands[6], 60.51)
-    Fetchlands[7] = np.append(Fetchlands[7], 54.57)
-    Fetchlands[8] = np.append(Fetchlands[8], 11.73)
-    Fetchlands[9] = np.append(Fetchlands[9], 17.55)
-    
-    f = open('Fetchland_prices.txt', 'w')
-    for i in range(0,10):
-        for j in range(0,4):
-            f.write(str(Fetchlands[i][j]))
-            f.write(',')
-        f.write('\n')
-    f.close()
-    
-    #return the prices of the fetchlands
-    return(Fetchlands)
+    #return values
+    return(Fetchlands,date_obj)
     
     
 def costVtime(cost, dates):
@@ -121,28 +108,46 @@ def costVtime(cost, dates):
     #plot controls
     fig, ax = plt.subplots(1, 1, figsize=(12, 14))
     
-    ax.set_xlim(2019.5,2025.5)
-    ax.set_ylim(0,100)
+    ax.set_xlim(2019.9,2020.9)
+    ax.set_ylim(0,150)
     
-    ax.set_xticks(range(2020,2025,1))
-    ax.set_yticks(range(0,100,5))
+    ax.set_xticks(range(2020,2021))
+    ax.set_yticks(range(0,150,5)) 
     
     #create an indexing variable
     n = 0
     #plot the costs of the fetchlands against the date
     for j in dates:
         date = j
-        ax.plot(date, Arid_Mesa[n], 'r+')         #0
-        ax.plot(date, Bloodstained_Mire[n], 'rx') #1
-        ax.plot(date, Flooded_Strand[n], 'b+')    #2
-        ax.plot(date, Marsh_Flats[n], 'g+')       #3
-        ax.plot(date, Misty_Rainforest[n], 'gx')  #4
-        ax.plot(date, Polluted_Delta[n], 'bx')    #5 
-        ax.plot(date, Scalding_Tarn[n], 'ro')     #6
-        ax.plot(date, Verdent_Catacombs[n], 'yo') #7
-        ax.plot(date, Windswept_Heath[n], 'go')   #8
-        ax.plot(date, Wooded_Foothills[n], 'bo')  #9
-        n = n+1
+        if(j == dates[-1]):
+            ax.plot(date, Arid_Mesa[n], 'r+',label = 'Arid Mesa')                #0
+            ax.plot(date, Bloodstained_Mire[n], 'rx',label = 'Bloodstained Mire')#1
+            ax.plot(date, Flooded_Strand[n], 'b+',label = 'Flooded Strand')      #2
+            ax.plot(date, Marsh_Flats[n], 'g+',label = 'Marsh Flats')            #3
+            ax.plot(date, Misty_Rainforest[n], 'gx',label = 'Misty Rainforest')  #4
+            ax.plot(date, Polluted_Delta[n], 'bx',label = 'Polluted Delta')      #5 
+            ax.plot(date, Scalding_Tarn[n], 'ro',label = 'Scalding Tarn')        #6
+            ax.plot(date, Verdent_Catacombs[n], 'yo',label = 'Verdent Catacombs')#7
+            ax.plot(date, Windswept_Heath[n], 'go',label = 'Windswept Heath')    #8
+            ax.plot(date, Wooded_Foothills[n], 'bo',label = 'Wooded Foothills')  #9
+        else:
+            ax.plot(date, Arid_Mesa[n], 'r+')         #0
+            ax.plot(date, Bloodstained_Mire[n], 'rx') #1
+            ax.plot(date, Flooded_Strand[n], 'b+')    #2
+            ax.plot(date, Marsh_Flats[n], 'g+')       #3
+            ax.plot(date, Misty_Rainforest[n], 'gx')  #4
+            ax.plot(date, Polluted_Delta[n], 'bx')    #5 
+            ax.plot(date, Scalding_Tarn[n], 'ro')     #6
+            ax.plot(date, Verdent_Catacombs[n], 'yo') #7
+            ax.plot(date, Windswept_Heath[n], 'go')   #8
+            ax.plot(date, Wooded_Foothills[n], 'bo')  #9
+        n = n+1     
+    
+    #plot labels
+    plt.xlabel('Date')
+    plt.ylabel('Price (USD)')
+    plt.title('Fetchland Prices\nOver time')
+    plt.legend(loc = 'upper left')
     
     #show the plot
     plt.show()
