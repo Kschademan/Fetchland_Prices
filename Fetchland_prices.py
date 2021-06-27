@@ -17,13 +17,16 @@ def ShowMeWhatYouGot():
     '''
     Dates = []
     
-    for i in range(0,19):
+    for i in range(0,39):
         n = float(i)/40
         Dates = np.append(Dates, 2020+n)
 
     Data = FetchpriceR()
     
-    costVtime(Data[0], Dates)
+    #code that works
+    #costVtime(Data[0], Dates)
+    
+    costVtime(Data[0], Data[1])
     
 def FetchpriceR():
     '''
@@ -70,7 +73,6 @@ def FetchpriceR():
     for j in Dates:
         j = np.fromstring(j, dtype=int, sep="-")
         date_obj = np.append(date_obj, dt.date(j[0],j[1],j[2])) 
-        
     
     #return values
     return(Fetchlands,date_obj)
@@ -108,11 +110,15 @@ def costVtime(cost, dates):
     #plot controls
     fig, ax = plt.subplots(1, 1, figsize=(12, 14))
     
-    ax.set_xlim(2019.9,2020.9)
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+    plt.gca().xaxis.set_major_locator(mdates.MonthLocator(interval=2)) 
+    plt.gcf().autofmt_xdate() 
+      
+    ax.set_xlim(dates[0],dates[-1])
     ax.set_ylim(0,150)
     
-    ax.set_xticks(range(2020,2021))
-    ax.set_yticks(range(0,150,5)) 
+    #ax.set_xticks(range(2020,2021))
+    #ax.set_yticks(range(0,150,5)) 
     
     #create an indexing variable
     n = 0
