@@ -17,7 +17,7 @@ def ShowMeWhatYouGot():
     '''
     Dates = []
     
-    for i in range(0,39):
+    for i in range(0,49):
         n = float(i)/40
         Dates = np.append(Dates, 2020+n)
 
