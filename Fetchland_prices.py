@@ -17,7 +17,7 @@ def ShowMeWhatYouGot():
     '''
     Dates = []
     
-    for i in range(0,49):
+    for i in range(0,50):
         n = float(i)/40
         Dates = np.append(Dates, 2020+n)
 
@@ -126,16 +126,26 @@ def costVtime(cost, dates):
     for j in dates:
         date = j
         if(j == dates[-1]):
-            ax.plot(date, Arid_Mesa[n], 'r+',label = 'Arid Mesa')                #0
-            ax.plot(date, Bloodstained_Mire[n], 'rx',label = 'Bloodstained Mire')#1
-            ax.plot(date, Flooded_Strand[n], 'b+',label = 'Flooded Strand')      #2
-            ax.plot(date, Marsh_Flats[n], 'g+',label = 'Marsh Flats')            #3
-            ax.plot(date, Misty_Rainforest[n], 'gx',label = 'Misty Rainforest')  #4
-            ax.plot(date, Polluted_Delta[n], 'bx',label = 'Polluted Delta')      #5 
-            ax.plot(date, Scalding_Tarn[n], 'ro',label = 'Scalding Tarn')        #6
-            ax.plot(date, Verdent_Catacombs[n], 'yo',label = 'Verdent Catacombs')#7
-            ax.plot(date, Windswept_Heath[n], 'go',label = 'Windswept Heath')    #8
-            ax.plot(date, Wooded_Foothills[n], 'bo',label = 'Wooded Foothills')  #9
+            ax.plot(date, Arid_Mesa[n], 'r+',label = 'Arid Mesa'
+                                                + ' ' + str(Arid_Mesa[-1]))      #0
+            ax.plot(date, Bloodstained_Mire[n], 'rx',label = 'Bloodstained Mire'
+                                        + ' ' + str(Bloodstained_Mire[-1]))      #1
+            ax.plot(date, Flooded_Strand[n], 'b+',label = 'Flooded Strand'
+                                           + ' ' + str(Flooded_Strand[-1]))      #2
+            ax.plot(date, Marsh_Flats[n], 'g+',label = 'Marsh Flats'
+                                              + ' ' + str(Marsh_Flats[-1]))      #3
+            ax.plot(date, Misty_Rainforest[n], 'gx',label = 'Misty Rainforest'
+                                         + ' ' + str(Misty_Rainforest[-1]))      #4
+            ax.plot(date, Polluted_Delta[n], 'bx',label = 'Polluted Delta'
+                                           + ' ' + str(Polluted_Delta[-1]))      #5 
+            ax.plot(date, Scalding_Tarn[n], 'ro',label = 'Scalding Tarn'
+                                            + ' ' + str(Scalding_Tarn[-1]))      #6
+            ax.plot(date, Verdent_Catacombs[n], 'yo',label = 'Verdent Catacombs'
+                                        + ' ' + str(Verdent_Catacombs[-1]))      #7
+            ax.plot(date, Windswept_Heath[n], 'go',label = 'Windswept Heath'
+                                          + ' ' + str(Windswept_Heath[-1]))      #8
+            ax.plot(date, Wooded_Foothills[n], 'bo',label = 'Wooded Foothills'
+                                         + ' ' + str(Wooded_Foothills[-1]))      #9
         else:
             ax.plot(date, Arid_Mesa[n], 'r+')         #0
             ax.plot(date, Bloodstained_Mire[n], 'rx') #1

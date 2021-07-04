@@ -650,12 +650,25 @@ def FetchpriceW():
     Fetchlands[9] = np.append(Fetchlands[9], 48.51)
     Fetchlands[10] = np.append(Fetchlands[10], datetime.date(2021,6,27))
     
+    #append the prices of the fetchlands for the next day(7/4/12021)//50
+    Fetchlands[0] = np.append(Fetchlands[0], 21.83)
+    Fetchlands[1] = np.append(Fetchlands[1], 44.60)
+    Fetchlands[2] = np.append(Fetchlands[2], 34.06)
+    Fetchlands[3] = np.append(Fetchlands[3], 21.68)
+    Fetchlands[4] = np.append(Fetchlands[4], 38.95)
+    Fetchlands[5] = np.append(Fetchlands[5], 43.78)
+    Fetchlands[6] = np.append(Fetchlands[6], 40.18)
+    Fetchlands[7] = np.append(Fetchlands[7], 34.32)
+    Fetchlands[8] = np.append(Fetchlands[8], 26.74)
+    Fetchlands[9] = np.append(Fetchlands[9], 43.72)
+    Fetchlands[10] = np.append(Fetchlands[10], datetime.date(2021,7,4))
+    
     filepath = os.path.join('C:/Users/backup/Fetchland_Prices', 'Fetchland_prices.txt')
     if not os.path.exists('C:/Users/backup/Fetchland_Prices'):
         os.makedirs('C:/Users/backup/Fetchland_Prices')
     f = open(filepath, 'w')
     for i in range(0,11):
-        for j in range(0,49):
+        for j in range(0,50):
             f.write(str(Fetchlands[i][j]))
             f.write(', ')
         f.write('\n')
